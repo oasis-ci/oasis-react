@@ -9,9 +9,8 @@ const OasisWidgetFrame = (props) => {
   return (
     <section styleName="OasisWidgetFrame">
       <div className="row">
-        <div className="col-md-12">
-          <h4 styleName="Heading">{props.heading} {props.loadProgressSection}</h4>
-          <hr/>
+        <div className="col-md-6">
+          <h3 styleName="Heading">{props.heading}</h3>
         </div>
       </div>
 
@@ -24,8 +23,6 @@ const OasisWidgetFrame = (props) => {
 
 OasisWidgetFrame.propTypes = {
   heading: PropTypes.string.isRequired,
-  loadProgressSection: PropTypes.node,
-
   children: PropTypes.node
 };
 

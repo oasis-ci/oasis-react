@@ -2,20 +2,19 @@ import { createSelector } from 'reselect';
 import { Map, List } from 'immutable';
 import tokens from './tokens';
 import trades from './trades';
-import { STATUS_COMPLETED, STATUS_PENDING } from '../reducers/platform';
-import reselect from '../../utils/reselect';
 
 const offers = state => state.get('offers');
 
-// const loadingBuyOffers = createSelector(
-//   offers,
-//   state => state.get('loadingBuyOffers')
-// );
-//
-// const loadingSellOffers = createSelector(
-//   offers,
-//   state => state.get('loadingSellOffers')
-// );
+
+const loadingBuyOffers = createSelector(
+  offers,
+  state => state.get('loadingBuyOffers')
+);
+
+const loadingSellOffers = createSelector(
+  offers,
+  state => state.get('loadingSellOffers')
+);
 
 const activeTradingPairBuyOffers = createSelector(
   offers,
@@ -43,57 +42,28 @@ const activeTradingPairSellOfferCount = createSelector(
   (state, activeTradingPair) => state.getIn(['offers', Map(activeTradingPair), 'sellOfferCount'])
 );
 
-
-const tradingPairOffersInitialLoadStatus = createSelector(
-  offers,
-  reselect.getProps,
-  (state, { baseToken, quoteToken }) =>
-    state.getIn(['offers', Map({ baseToken, quoteToken }), 'initialSyncStatus'])
+const getUserClosedOffers = createSelector(
+  trades.marketsData,
+  tokens.activeTradingPair,
+  (trades, activeTradingPair) => trades.getIn(['offers', Map(activeTradingPair), 'sellOfferCount'])
 );
 
-
-const activeTradingPairOffersInitialLoadStatus = createSelector(
+const getUserOpenOffers = createSelector(
   offers,
   tokens.activeTradingPair,
-  (state, activeTradingPair) =>
-    state.getIn(['offers', Map(activeTradingPair), 'initialSyncStatus'])
+  (state, activeTradingPair) => state.getIn(['offers', Map(activeTradingPair), 'sellOfferCount'])
 );
 
-const activeTradingPairOffersInitialLoadPending = createSelector(
-  offers,
-  tokens.activeTradingPair,
-  (state, activeTradingPair) => state.getIn(['offers', Map(activeTradingPair), 'initialSyncStatus']) === STATUS_PENDING
-);
-
-const activeTradingPairOffersInitiallyLoaded = createSelector(
-  offers,
-  tokens.activeTradingPair,
-  (state, activeTradingPair) => state.getIn(['offers', Map(activeTradingPair), 'initialSyncStatus']) === STATUS_COMPLETED
-);
-
-const offersInitialized = createSelector(
-  offers,
-  state => state.get('offersInitialized')
-);
-
-const allOffers = createSelector(
-  offers,
-  state => state.get('offers')
-)
 
 
 export default {
   state: offers,
-  offersInitialized,
-  // loadingBuyOffers,
-  // loadingSellOffers,
+  loadingBuyOffers,
+  loadingSellOffers,
   activeTradingPairBuyOffers,
   activeTradingPairSellOffers,
   activeTradingPairBuyOfferCount,
   activeTradingPairSellOfferCount,
-  activeTradingPairOffersInitialLoadPending,
-  activeTradingPairOffersInitiallyLoaded,
-  activeTradingPairOffersInitialLoadStatus,
-  tradingPairOffersInitialLoadStatus,
-  allOffers
+  getUserOpenOffers,
+  getUserClosedOffers
 }

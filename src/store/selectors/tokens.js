@@ -29,11 +29,6 @@ const tradingPairs = createSelector(
   state => state.get('tradingPairs'),
 );
 
-const baseTokens = createSelector(
-  tokens,
-  state => state.get('tradingPairs').map(tp => tp.get('base')),
-);
-
 const getTokenSpecs = createSelector(
   tokens,
   reselect.getProps,
@@ -73,6 +68,5 @@ export default {
   validQuoteTokensList,
   tradingPairs,
   getTokensSpecsObject,
-  precision,
-  baseTokens
+  precision
 };

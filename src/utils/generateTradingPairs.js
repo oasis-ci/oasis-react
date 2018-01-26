@@ -1,4 +1,4 @@
-import { TOKEN_DAI, TOKEN_MAKER } from '../constants';
+import { TOKEN_MAKER } from '../constants';
 
 export const generateTradingPairs = (baseTokens, quoteTokens) => {
   const TradingPairs = [
@@ -29,7 +29,7 @@ export const generateTradingPairs = (baseTokens, quoteTokens) => {
   ];
 
   baseTokens.forEach((base) => {
-    if(base === TOKEN_MAKER || base === TOKEN_DAI) { return; }
+    if(base === TOKEN_MAKER) { return; }
     quoteTokens.forEach((quote) => {
       TradingPairs.push({
         base,

@@ -24,16 +24,6 @@ const getColTemplate = (rowDef, row) => {
 
 export class OasisTable extends PureComponent {
 
-  constructor(props) {
-    super(props);
-    this.rowClickHandler = this.rowClickHandler.bind(this);
-  }
-
-  rowClickHandler(ev) {
-    const { onRowClick } = this.props;
-    onRowClick && onRowClick(ev);
-  }
-
   rowContent(row) {
     const { col } = this.props;
     return col.map(
@@ -58,13 +48,8 @@ export class OasisTable extends PureComponent {
 
   renderRows() {
     const { rows } = this.props;
-    return rows.map( (row, i) => {
-      return (
-        <tr className={row.isActive ? 'active' : null} key={i} data-tradingpair={row.tradingPair} onClick={this.rowClickHandler}>
-          {this.rowContent(row)}
-        </tr>
-      )
-    }
+    return rows.map( (row, i) =>
+      (<tr key={i}>{this.rowContent(row)}</tr>)
     );
   }
 

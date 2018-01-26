@@ -19,8 +19,6 @@ import tradesReducer from './trades';
 import period from '../../utils/period';
 import network from '../selectors/network';
 import offersReducer from './offers';
-import tokens from '../selectors/tokens';
-import findOffer from '../../utils/offers/findOffer';
 
 const initialState = Immutable.fromJS(
   {
@@ -223,14 +221,9 @@ const checkNetworkEpic = (providerType, isInitialHealthcheck) => async (dispatch
     dispatch(subscribeLatestBlockFilterEpic());
 
     /**
-     * Inital offersReducer sync
+     * Inital offers sync
      */
-
-    dispatch(offersReducer.actions.subscribeOffersEventsEpic());
-    dispatch(offersReducer.actions.syncOffersEpic(
-      tokens.activeTradingPair(getState())
-    ));
-
+    dispatch(offersReducer.actions.syncOffersEpic());
     /**
      *  Fetch LogTake events for set historicalRange
      */
@@ -270,7 +263,6 @@ const checkNetworkEpic = (providerType, isInitialHealthcheck) => async (dispatch
     dispatch(platformReducer.actions.web3Reset());
     currentNetworkName = getState().getIn(['network', 'activeNetworkName']);
     dispatch(setTokenAddresses(currentNetworkName));
-    dispatch(offersReducer.actions.initOffersEpic());
 
     /**
      * Loading contracts and initializing market

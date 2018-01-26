@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
 
 import './index.css';
 import OasisAppWrapper from './containers/OasisApp';
@@ -19,7 +18,7 @@ import period from './utils/period';
 import conversion from './utils/conversion';
 import { errorHandler } from './utils/errorHandlers';
 
-const { store, history } = configureStore();
+const store = configureStore();
 
 const healthCheck = (dispatch, getState, isInitialHealhtcheck = false) => {
   if (isInitialHealhtcheck) {
@@ -74,17 +73,16 @@ const bootstrap = async () => {
   conversion.init(getState);
   dispatch(platformReducer.actions.web3Initialized(web3.init()));
   await healthCheck(dispatch, getState, true);
+
   // TODO: extract this into a configuration and agree on the value.
-  setInterval(await healthCheck.bind(null, dispatch, getState), 10000);
+  setInterval(await healthCheck.bind(null, dispatch, getState), 5000);
 };
 
 (async () => {
   await bootstrap();
   ReactDOM.render(
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <OasisAppWrapper/>
-      </ConnectedRouter>
+      <OasisAppWrapper/>
     </Provider>
     , document.getElementById('root'));
 })();
